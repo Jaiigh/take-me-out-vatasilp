@@ -12,6 +12,13 @@ const CONTESTANT_NAMES: Record<ContestantId, string> = {
   pao: 'Pao',
 };
 
+const CONTESTANT_IMAGES: Record<ContestantId, string> = {
+  jom: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Jom&backgroundColor=ff8c00,ff6b35,8b4513',
+  ten: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Ten&backgroundColor=8b008b,4b0082,2d1b2d',
+  jino: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Jino&backgroundColor=ff4500,dc143c,8b0000',
+  pao: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Pao&backgroundColor=ff8c00,ffa500,daa520',
+};
+
 export default function Home() {
   const [likes, setLikes] = useState<Record<ContestantId, number>>({
     jom: 0,
@@ -20,6 +27,7 @@ export default function Home() {
     pao: 0,
   });
   const [currentVote, setCurrentVote] = useState<ContestantId | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [userId] = useState(() => {
     // Generate or retrieve user ID from localStorage
     if (typeof window !== 'undefined') {
@@ -33,6 +41,22 @@ export default function Home() {
     return '';
   });
   const [loading, setLoading] = useState(true);
+
+  // Check for admin mode via URL parameter or localStorage
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      const adminParam = urlParams.get('admin');
+      
+      if (adminParam === 'true') {
+        setIsAdmin(true);
+        localStorage.setItem('isAdmin', 'true');
+      } else {
+        const storedAdmin = localStorage.getItem('isAdmin');
+        setIsAdmin(storedAdmin === 'true');
+      }
+    }
+  }, []);
 
   const fetchLikes = useCallback(async () => {
     try {
@@ -121,10 +145,12 @@ export default function Home() {
         justifyContent: 'center', 
         alignItems: 'center', 
         minHeight: '100vh',
-        color: 'white',
-        fontSize: '1.5rem'
+        color: '#ff8c00',
+        fontSize: '1.5rem',
+        position: 'relative',
+        zIndex: 1,
       }}>
-        Loading...
+        🎃 Loading...
       </div>
     );
   }
@@ -133,17 +159,44 @@ export default function Home() {
     <main style={{
       maxWidth: '1200px',
       margin: '0 auto',
+      position: 'relative',
+      zIndex: 1,
     }}>
       <h1 style={{
         textAlign: 'center',
-        color: 'white',
-        fontSize: '3rem',
+        color: '#ff8c00',
+        fontSize: '3.5rem',
         fontWeight: 'bold',
-        marginBottom: '3rem',
-        textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
+        marginBottom: '1rem',
+        textShadow: '0 0 20px rgba(255, 140, 0, 0.5), 0 0 40px rgba(255, 140, 0, 0.3), 3px 3px 6px rgba(0,0,0,0.8)',
+        fontFamily: 'serif',
+        letterSpacing: '2px',
       }}>
-        Take Me Out
+        🎃 Take Me Out 🎃
       </h1>
+
+      {isAdmin && (
+        <div style={{
+          textAlign: 'center',
+          marginBottom: '2rem',
+          padding: '1rem',
+          backgroundColor: 'rgba(255, 140, 0, 0.2)',
+          borderRadius: '12px',
+          border: '2px solid #ff8c00',
+          backdropFilter: 'blur(10px)',
+        }}>
+          <div style={{ color: '#ff8c00', fontSize: '1.1rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>
+            👻 ADMIN MODE - Vote Counts Visible 👻
+          </div>
+          <div style={{ color: '#fff', fontSize: '0.9rem' }}>
+            {Object.entries(likes).map(([id, count]) => (
+              <span key={id} style={{ margin: '0 0.5rem' }}>
+                {CONTESTANT_NAMES[id as ContestantId]}: <strong>{count}</strong>
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div style={{
         display: 'grid',
@@ -155,8 +208,10 @@ export default function Home() {
           <ContestantCard
             key={contestantId}
             name={CONTESTANT_NAMES[contestantId]}
+            imageUrl={CONTESTANT_IMAGES[contestantId]}
             likes={likes[contestantId] || 0}
             isLiked={currentVote === contestantId}
+            showLikes={isAdmin}
             onLike={() => handleLike(contestantId)}
             onUnlike={handleUnlike}
           />
@@ -166,14 +221,27 @@ export default function Home() {
       {currentVote && (
         <div style={{
           textAlign: 'center',
-          color: 'white',
+          color: '#ff8c00',
           fontSize: '1.2rem',
           padding: '1rem',
-          backgroundColor: 'rgba(255, 255, 255, 0.2)',
-          borderRadius: '8px',
+          backgroundColor: 'rgba(45, 27, 45, 0.8)',
+          borderRadius: '12px',
+          border: '2px solid #ff8c00',
           backdropFilter: 'blur(10px)',
+          boxShadow: '0 0 20px rgba(255, 140, 0, 0.3)',
         }}>
-          You are currently voting for: <strong>{CONTESTANT_NAMES[currentVote]}</strong>
+          🎃 You are currently voting for: <strong style={{ color: '#ff8c00' }}>{CONTESTANT_NAMES[currentVote]}</strong> 🎃
+        </div>
+      )}
+
+      {!isAdmin && (
+        <div style={{
+          textAlign: 'center',
+          marginTop: '2rem',
+          color: 'rgba(255, 255, 255, 0.6)',
+          fontSize: '0.9rem',
+        }}>
+          👻 Vote counts are hidden 👻
         </div>
       )}
     </main>

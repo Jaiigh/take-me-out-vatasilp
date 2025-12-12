@@ -1,14 +1,18 @@
-# Take Me Out - Voting Website
+# Take Me Out - Voting Website 🎃
 
-A real-time voting website similar to the game show "Take Me Out" where users can vote for their favorite contestants.
+A real-time voting website similar to the game show "Take Me Out" with a spooky Halloween theme! Users can vote for their favorite contestants.
 
 ## Features
 
+- 🎃 **Halloween Theme** - Dark, spooky design with orange and purple colors
+- 👻 **Anonymous Voting** - Vote counts are hidden from regular users
+- 🔍 **Admin Mode** - View vote counts by adding `?admin=true` to the URL
+- 🖼️ **Contestant Images** - Placeholder avatars for each contestant
 - 4 contestants: Jom, Ten, Jino, Pao
-- Real-time like counts that update every 2 seconds
-- Each user can like one contestant at a time
-- Users can remove their like and switch to another contestant
-- Beautiful, modern UI with gradient backgrounds and smooth animations
+- Real-time vote updates every 2 seconds
+- Each user can vote for one contestant at a time
+- Users can remove their vote and switch to another contestant
+- Beautiful, animated UI with Halloween-themed styling
 
 ## Tech Stack
 
@@ -86,13 +90,24 @@ If you want to test without setting up KV, the app will use an in-memory store. 
 ## How It Works
 
 1. **User Identification**: Each user gets a unique ID stored in localStorage
-2. **Voting**: When a user likes a contestant:
-   - If they previously liked someone else, that like is removed
-   - The new contestant's like count increases
-3. **Real-time Updates**: The app polls the API every 2 seconds to get updated counts
-4. **Data Storage**: 
+2. **Voting**: When a user votes for a contestant:
+   - If they previously voted for someone else, that vote is removed
+   - The new contestant's vote count increases
+3. **Anonymous Mode**: Regular users cannot see vote counts (shows "👻 Hidden 👻")
+4. **Admin Mode**: Add `?admin=true` to the URL to see all vote counts
+5. **Real-time Updates**: The app polls the API every 2 seconds to get updated counts
+6. **Data Storage**: 
    - Production: Vercel KV (persistent Redis)
    - Development: In-memory store (resets on restart)
+
+## Viewing Vote Counts (Admin)
+
+See [ADMIN_GUIDE.md](./ADMIN_GUIDE.md) for detailed instructions on how to view vote counts.
+
+**Quick Method:** Visit your site with `?admin=true` parameter:
+```
+https://your-app.vercel.app?admin=true
+```
 
 ## API Endpoints
 

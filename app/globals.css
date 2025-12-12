@@ -16,14 +16,44 @@ body {
 }
 
 body {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #1a0a1a 0%, #2d1b2d 25%, #1a0a0a 50%, #2d1b0a 75%, #1a0a1a 100%);
+  background-size: 400% 400%;
+  animation: spookyGradient 15s ease infinite;
   min-height: 100vh;
   padding: 2rem;
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 20% 50%, rgba(255, 140, 0, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(128, 0, 128, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 20%, rgba(255, 69, 0, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes spookyGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 @media (max-width: 768px) {
   body {
     padding: 1rem;
   }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
 }
 
