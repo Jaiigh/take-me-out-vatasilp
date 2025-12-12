@@ -3,11 +3,13 @@
 ## Method 1: Admin Mode in the Web App (Easiest)
 
 1. **Enable Admin Mode:**
+
    - Visit your website with the query parameter: `?admin=true`
    - Example: `https://your-app.vercel.app?admin=true`
    - This will enable admin mode and save it to localStorage
 
 2. **View Vote Counts:**
+
    - Once admin mode is enabled, you'll see:
      - A banner at the top showing all vote counts
      - Individual vote counts on each contestant card
@@ -16,18 +18,20 @@
 3. **Disable Admin Mode:**
    - Clear localStorage: Open browser console and run:
      ```javascript
-     localStorage.removeItem('isAdmin');
+     localStorage.removeItem("isAdmin");
      location.reload();
      ```
 
 ## Method 2: Check Database Directly (Upstash Console)
 
 1. **Access Upstash Console:**
+
    - Go to [console.upstash.com](https://console.upstash.com)
    - Sign in with the same account used in Vercel
    - Find your database: `upstash-kv-blue-door`
 
 2. **View Data:**
+
    - Click on your database
    - Go to the "Data" or "Browser" tab
    - Look for the key: `likes`
@@ -36,7 +40,7 @@
      {
        "jom": 25,
        "ten": 30,
-       "jino": 20,
+       "gino": 20,
        "pao": 15
      }
      ```
@@ -67,16 +71,16 @@ curl "YOUR_KV_REST_API_URL/userVotes" \
 If you want a dedicated admin endpoint, you can create `/app/api/admin/stats/route.ts`:
 
 ```typescript
-import { NextResponse } from 'next/server';
-import { getLikes, getUserVote } from '@/lib/kv';
+import { NextResponse } from "next/server";
+import { getLikes, getUserVote } from "@/lib/kv";
 
 export async function GET(request: Request) {
   // Add password protection here
   const { searchParams } = new URL(request.url);
-  const password = searchParams.get('password');
-  
-  if (password !== 'your-secret-password') {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  const password = searchParams.get("password");
+
+  if (password !== "your-secret-password") {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   const likes = await getLikes();
@@ -89,9 +93,9 @@ Then visit: `https://your-app.vercel.app/api/admin/stats?password=your-secret-pa
 ## Quick Access
 
 **For quick access, bookmark this URL:**
+
 ```
 https://your-app.vercel.app?admin=true
 ```
 
 This will automatically enable admin mode whenever you visit.
-

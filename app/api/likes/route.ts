@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (!['jom', 'ten', 'jino', 'pao'].includes(contestantId)) {
+    if (!['jom', 'ten', 'gino', 'pao'].includes(contestantId)) {
       return NextResponse.json(
         { error: 'Invalid contestantId' },
         { status: 400 }

@@ -7,8 +7,8 @@ A real-time voting website similar to the game show "Take Me Out" with a spooky 
 - 🎃 **Halloween Theme** - Dark, spooky design with orange and purple colors
 - 👻 **Anonymous Voting** - Vote counts are hidden from regular users
 - 🔍 **Admin Mode** - View vote counts by adding `?admin=true` to the URL
-- 🖼️ **Contestant Images** - Placeholder avatars for each contestant
-- 4 contestants: Jom, Ten, Jino, Pao
+- 🖼️ **Contestant Images** - Custom PNG images for each contestant
+- 4 contestants: Jom, Ten, Gino, Pao
 - Real-time vote updates every 2 seconds
 - Each user can vote for one contestant at a time
 - Users can remove their vote and switch to another contestant
@@ -30,6 +30,7 @@ A real-time voting website similar to the game show "Take Me Out" with a spooky 
 3. **Concurrency**: Handle multiple users voting simultaneously
 
 The app uses **Vercel KV** (serverless Redis) which is perfect for this use case:
+
 - Free tier available
 - Scales automatically
 - Works seamlessly with Vercel
@@ -38,16 +39,25 @@ The app uses **Vercel KV** (serverless Redis) which is perfect for this use case
 ## Local Development
 
 1. **Install dependencies:**
+
    ```bash
    npm install
    ```
 
-2. **Run the development server:**
+2. **Add contestant images:**
+
+   - Place PNG images in the `public/images/` folder
+   - Name them: `jom.png`, `ten.png`, `gino.png`, `pao.png`
+   - Recommended size: 400x400px or larger (square aspect ratio)
+   - See `public/images/README.md` for details
+
+3. **Run the development server:**
+
    ```bash
    npm run dev
    ```
 
-3. **Open [http://localhost:3000](http://localhost:3000)** in your browser
+4. **Open [http://localhost:3000](http://localhost:3000)** in your browser
 
 **Note:** Without Vercel KV credentials, the app will use an in-memory store that resets on server restart. This is fine for local testing but won't work across multiple users.
 
@@ -56,6 +66,7 @@ The app uses **Vercel KV** (serverless Redis) which is perfect for this use case
 ### Option 1: Deploy with Vercel KV (Recommended)
 
 1. **Push your code to GitHub:**
+
    ```bash
    git init
    git add .
@@ -65,12 +76,14 @@ The app uses **Vercel KV** (serverless Redis) which is perfect for this use case
    ```
 
 2. **Deploy to Vercel:**
+
    - Go to [vercel.com](https://vercel.com)
    - Click "New Project"
    - Import your GitHub repository
    - Vercel will auto-detect Next.js settings
 
 3. **Set up Vercel KV:**
+
    - In your Vercel project dashboard, go to the "Storage" tab
    - Click "Create Database" → Select "KV"
    - This will automatically add the required environment variables:
@@ -83,6 +96,7 @@ The app uses **Vercel KV** (serverless Redis) which is perfect for this use case
 ### Option 2: Deploy without Vercel KV (One-time use, limited)
 
 If you want to test without setting up KV, the app will use an in-memory store. However:
+
 - ❌ Data resets on server restart
 - ❌ Not suitable for production
 - ✅ Works for quick testing
@@ -96,7 +110,7 @@ If you want to test without setting up KV, the app will use an in-memory store. 
 3. **Anonymous Mode**: Regular users cannot see vote counts (shows "👻 Hidden 👻")
 4. **Admin Mode**: Add `?admin=true` to the URL to see all vote counts
 5. **Real-time Updates**: The app polls the API every 2 seconds to get updated counts
-6. **Data Storage**: 
+6. **Data Storage**:
    - Production: Vercel KV (persistent Redis)
    - Development: In-memory store (resets on restart)
 
@@ -105,6 +119,7 @@ If you want to test without setting up KV, the app will use an in-memory store. 
 See [ADMIN_GUIDE.md](./ADMIN_GUIDE.md) for detailed instructions on how to view vote counts.
 
 **Quick Method:** Visit your site with `?admin=true` parameter:
+
 ```
 https://your-app.vercel.app?admin=true
 ```
@@ -126,6 +141,7 @@ The app is designed to handle ~100 concurrent users:
 - **No Database Queries**: Simple key-value operations are very fast
 
 For larger scale (1000+ users), consider:
+
 - Reducing polling interval or using WebSockets
 - Adding rate limiting
 - Using a more robust database
@@ -155,10 +171,10 @@ For larger scale (1000+ users), consider:
 ## Environment Variables
 
 When using Vercel KV, these are automatically set:
+
 - `KV_REST_API_URL` - Your KV database URL
 - `KV_REST_API_TOKEN` - Your KV access token
 
 ## License
 
 MIT
-

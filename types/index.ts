@@ -1,4 +1,4 @@
-export type ContestantId = 'jom' | 'ten' | 'jino' | 'pao';
+export type ContestantId = 'jom' | 'ten' | 'gino' | 'pao';
 
 export interface Contestant {
   id: ContestantId;
