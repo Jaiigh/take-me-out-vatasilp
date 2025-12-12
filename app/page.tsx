@@ -179,7 +179,7 @@ export default function Home() {
           letterSpacing: "2px",
         }}
       >
-        🎃 Take Me Out 🎃
+        🎃 เท้คมีเอ๊า 🎃
       </h1>
 
       {isAdmin && (
